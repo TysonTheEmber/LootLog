@@ -1,0 +1,113 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+base {
+    archivesName = "${mod_id}-forge"
+}
+
+sourceSets.main.java.srcDir project(':common').file('src/config/java')
+
+minecraft {
+    mappings channel: mapping_channel_1201, version: mapping_version_1201
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                    source project(':common').sourceSets.main
+                }
+            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+        }
+    }
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${mc_1201}-${forge_version}"
+    implementation project(':common')
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // EmbersTextAPI - soft dependency for text effect integration
+    compileOnly "net.tysontheember.emberstextapi:emberstextapi-forge-1.20.1:2.9.1"
+    // runtimeOnly excluded: 2.9.1 has a broken TranslatableContentsMixin on Forge 1.20.1
+
+    // YACL - optional config GUI
+    compileOnly fg.deobf("dev.isxander:yet-another-config-lib:${yacl_version_1201}-forge")
+    runtimeOnly fg.deobf("dev.isxander:yet-another-config-lib:${yacl_version_1201}-forge")
+}
+
+tasks.named('jar', Jar).configure {
+    from(project(':common').sourceSets.main.output)
+
+    manifest {
+        attributes([
+            "Specification-Title"     : mod_id,
+            "Specification-Vendor"    : mod_authors,
+            "Specification-Version"   : "1",
+            "Implementation-Title"    : project.name,
+            "Implementation-Version"  : project.jar.archiveVersion,
+            "Implementation-Vendor"   : mod_authors,
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
+    finalizedBy 'reobfJar'
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+        minecraft_version      : mc_1201,
+        minecraft_version_range: mc_range_1201,
+        forge_version          : forge_version,
+        forge_version_range    : forge_version_range,
+        loader_version_range   : forge_loader_range,
+        mod_id                 : mod_id,
+        mod_name               : mod_name,
+        mod_license            : mod_license,
+        mod_version            : mod_version,
+        mod_authors            : mod_authors,
+        mod_description        : mod_description,
+    ]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}

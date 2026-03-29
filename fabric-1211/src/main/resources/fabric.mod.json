@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    "TysonTheEmber"
+  ],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.tysontheember.lootlog.fabric.LootLogFabric"
+    ],
+    "modmenu": [
+      "dev.tysontheember.lootlog.fabric.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "lootlog.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "yet-another-config-lib": "*",
+    "modmenu": "*"
+  }
+}

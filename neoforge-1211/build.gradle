@@ -1,0 +1,79 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.gradle.userdev' version '7.1.21'
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+base {
+    archivesName = "${mod_id}-neoforge"
+}
+
+// Include common sources and resources in neoforge's source set so they're part of the same mod
+sourceSets.main.java.srcDirs += project(':common').sourceSets.main.java.srcDirs
+sourceSets.main.java.srcDir project(':common').file('src/config/java')
+sourceSets.main.resources.srcDirs += project(':common').sourceSets.main.resources.srcDirs
+
+runs {
+    configureEach {
+        workingDirectory project.file('run')
+        modSource project.sourceSets.main
+    }
+
+    client {}
+
+    server {
+        argument '--nogui'
+    }
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neoforge_version}"
+    implementation project(':common')
+
+    // EmbersTextAPI - soft dependency for text effect integration
+    compileOnly "net.tysontheember.emberstextapi:emberstextapi-neoforge-1.21.1:2.9.1"
+    runtimeOnly "net.tysontheember.emberstextapi:emberstextapi-neoforge-1.21.1:2.9.1"
+
+    // YACL - optional config GUI
+    compileOnly "dev.isxander:yet-another-config-lib:${yacl_version_1211}-neoforge"
+    runtimeOnly "dev.isxander:yet-another-config-lib:${yacl_version_1211}-neoforge"
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+            "Specification-Title"     : mod_id,
+            "Specification-Vendor"    : mod_authors,
+            "Specification-Version"   : "1",
+            "Implementation-Title"    : project.name,
+            "Implementation-Version"  : project.jar.archiveVersion,
+            "Implementation-Vendor"   : mod_authors,
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+        minecraft_version      : mc_1211,
+        minecraft_version_range: mc_range_1211,
+        neoforge_version       : neoforge_version,
+        neoforge_version_range : neoforge_version_range,
+        loader_version_range   : neoforge_loader_range,
+        mod_id                 : mod_id,
+        mod_name               : mod_name,
+        mod_license            : mod_license,
+        mod_version            : mod_version,
+        mod_authors            : mod_authors,
+        mod_description        : mod_description,
+    ]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}

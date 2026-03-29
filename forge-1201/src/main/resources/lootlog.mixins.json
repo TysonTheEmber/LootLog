@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.tysontheember.lootlog.forge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "lootlog.refmap.json",
+  "mixins": [],
+  "client": [
+    "ClientPacketListenerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
