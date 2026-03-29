@@ -127,11 +127,15 @@ public class NeoForgeHudRenderer implements RenderBridge {
 
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
 
-        mc.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, graphics.pose(),
-                renderType -> graphics.bufferSource().getBuffer(
-                        (renderType == RenderType.glint() || renderType == RenderType.entityGlintDirect())
-                                ? renderType : ENTITY_CUTOUT_BLEND),
-                15728880, OverlayTexture.NO_OVERLAY, model);
+        try {
+            mc.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, graphics.pose(),
+                    renderType -> graphics.bufferSource().getBuffer(
+                            (renderType == RenderType.glint() || renderType == RenderType.entityGlintDirect())
+                                    ? renderType : ENTITY_CUTOUT_BLEND),
+                    15728880, OverlayTexture.NO_OVERLAY, model);
+        } catch (Exception e) {
+            // Third-party item renderers may use incompatible vertex formats (e.g. Sodium + custom text rendering)
+        }
         graphics.flush();
 
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -161,11 +165,15 @@ public class NeoForgeHudRenderer implements RenderBridge {
 
         RenderSystem.setShaderColor(red, green, blue, alpha);
 
-        mc.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, graphics.pose(),
-                renderType -> graphics.bufferSource().getBuffer(
-                        (renderType == RenderType.glint() || renderType == RenderType.entityGlintDirect())
-                                ? renderType : ENTITY_CUTOUT_BLEND),
-                15728880, OverlayTexture.NO_OVERLAY, model);
+        try {
+            mc.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, graphics.pose(),
+                    renderType -> graphics.bufferSource().getBuffer(
+                            (renderType == RenderType.glint() || renderType == RenderType.entityGlintDirect())
+                                    ? renderType : ENTITY_CUTOUT_BLEND),
+                    15728880, OverlayTexture.NO_OVERLAY, model);
+        } catch (Exception e) {
+            // Third-party item renderers may use incompatible vertex formats (e.g. Sodium + custom text rendering)
+        }
         graphics.flush();
 
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
