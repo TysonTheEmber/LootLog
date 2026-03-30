@@ -116,6 +116,6 @@ jobs:
           name: "Loot Log ${{ steps.version.outputs.version }} (${{ matrix.name }})"
           version: ${{ steps.version.outputs.version }}+${{ matrix.subproject }}
           version-type: release
-          changelog-file: CURSEFORGE.md
+          changelog-file: CHANGELOG.md
           game-versions: ${{ matrix.mc_version }}
           loaders: ${{ matrix.loader }}
