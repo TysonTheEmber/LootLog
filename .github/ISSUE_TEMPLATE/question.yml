@@ -2,6 +2,10 @@ name: Question
 description: Ask a question about the mod
 labels: ["question"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Before asking, please check the [wiki](https://tysontheember.dev/loot-log/intro/) — your question may already be answered there.
   - type: textarea
     id: question
     attributes:
