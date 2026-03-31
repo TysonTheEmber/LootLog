@@ -55,3 +55,11 @@ body:
       placeholder: https://mclo.gs/...
     validations:
       required: true
+  - type: textarea
+    id: modlist
+    attributes:
+      label: Mod List
+      description: List any other mods you have installed that may be relevant, and the modpack if you are using one
+      render: text
+    validations:
+      required: false
