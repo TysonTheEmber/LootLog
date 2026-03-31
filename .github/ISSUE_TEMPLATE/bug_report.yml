@@ -1,65 +1,67 @@
 name: Bug Report
-description: Report a bug or unexpected behavior
+description: Report a bug or crash with Ember's Text API
 labels: ["bug"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out the fields below so we can reproduce and fix it.
+
+  - type: dropdown
+    id: loader
+    attributes:
+      label: Mod Loader
+      options:
+        - Forge 1.20.1
+        - Fabric 1.20.1
+        - NeoForge 1.21.1
+        - Fabric 1.21.1
+    validations:
+      required: true
+
+  - type: input
+    id: mod-version
+    attributes:
+      label: Mod Version
+      description: The version of Ember's Text API you're using
+      placeholder: e.g. 2.9.4
+    validations:
+      required: true
+
+  - type: input
+    id: log
+    attributes:
+      label: Crash Log / Error Output
+      description: Upload your latest.log to https://mclo.gs and paste the link here
+      placeholder: https://mclo.gs/
+    validations:
+      required: true
+
   - type: textarea
     id: description
     attributes:
-      label: Description
-      description: A clear description of the bug.
+      label: Bug Description
+      description: What happened? What did you expect to happen instead?
     validations:
       required: true
+
   - type: textarea
     id: steps
     attributes:
       label: Steps to Reproduce
-      description: How can we reproduce the issue?
-      placeholder: |
-        1. ...
-        2. ...
-        3. ...
+      description: How can we reproduce this bug?
+      value: |
+        1.
+        2.
+        3.
     validations:
       required: true
+
+
   - type: textarea
-    id: expected
+    id: other-mods
     attributes:
-      label: Expected Behavior
-      description: What did you expect to happen?
-    validations:
-      required: true
-  - type: textarea
-    id: actual
-    attributes:
-      label: Actual Behavior
-      description: What actually happened?
-    validations:
-      required: true
-  - type: input
-    id: version
-    attributes:
-      label: Mod Version
-      description: Which version of the mod are you using?
-    validations:
-      required: true
-  - type: input
-    id: minecraft-version
-    attributes:
-      label: Minecraft Version
-    validations:
-      required: true
-  - type: input
-    id: logs
-    attributes:
-      label: Logs
-      description: Upload your latest.log to [mclo.gs](https://mclo.gs) and paste the link here.
-      placeholder: https://mclo.gs/...
-    validations:
-      required: true
-  - type: textarea
-    id: modlist
-    attributes:
-      label: Mod List
+      label: Other Mods Installed
       description: List any other mods you have installed that may be relevant, and the modpack if you are using one
-      render: text
     validations:
       required: false
