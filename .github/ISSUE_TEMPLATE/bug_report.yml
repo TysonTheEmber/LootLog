@@ -51,7 +51,7 @@ body:
     id: logs
     attributes:
       label: Logs
-      description: Upload your latest.log and crash report (if applicable) to [mclo.gs](https://mclo.gs) and paste the link here. Crash reports alone may not be enough — please always include your latest.log as well.
+      description: Upload your latest.log to [mclo.gs](https://mclo.gs) and paste the link here.
       placeholder: https://mclo.gs/...
     validations:
       required: true
